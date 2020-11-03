@@ -1,12 +1,12 @@
 <template>
     <form class="create-tweet-panel" @submit.prevent="createNewTweet" :class="{'--exceeded':newTweetCharacterCount>180}">
         <label for="newTweet"><strong>New Tweet </strong>({{newTweetCharacterCount}}/180)</label>
-        <textarea id="newTweet" rows="4" v-model="newTweetContent"/>
+        <textarea id="newTweet" rows="4" v-model="state.newTweetContent"/>
         <div class="create-tweet-panel__submit">
             <div class="create-tweet-type">
                 <label for="newTweetType"><strong>Type:</strong></label>
-                <select id="newTweetType" v-model="selectedTweetType">
-                    <option :value="option.value" v-for="(option,index) in tweetTypes" :key="index">
+                <select id="newTweetType" v-model="state.selectedTweetType">
+                    <option :value="option.value" v-for="(option,index) in state.tweetTypes" :key="index">
                     {{option.name}}
                     </option>
                 </select>
@@ -17,30 +17,32 @@
 </template>
 
 <script>
+import {reactive,computed} from 'vue';
 export default {
   name: "TweetPanel",
-  data() {
-    return {
+  setup(props,ctx){
+    const state=reactive({
       newTweetContent:'',
       selectedTweetType:'instant',
       tweetTypes:[
           {value:'draft',name:'Draft'},
           {value:'instant',name:'Instant Tweet'}
       ],
-    }
-  },
-  computed:{
-      newTweetCharacterCount(){
-      return this.newTweetContent.length;
-    }
-  },
-  methods:{
-      createNewTweet(){
-        if(this.newTweetContent && this.selectedTweetType !=='draft'){
-           this.$emit('add-tweet',this.newTweetContent)
-           this.newTweetContent=''
+    })
+
+    const newTweetCharacterCount=computed(()=>state.newTweetContent.length)
+
+    function createNewTweet(){
+        if(state.newTweetContent && state.selectedTweetType !=='draft'){
+           ctx.emit('add-tweet',state.newTweetContent);
+           state.newTweetContent=''
         }
-  }
+      }
+    return {
+      state,
+      newTweetCharacterCount,
+      createNewTweet
+    }
   }
 }
 </script>
