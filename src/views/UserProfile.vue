@@ -19,9 +19,11 @@
 </template>
 
 <script>
-import {reactive} from 'vue';
-import TweetItem from './TweetItem';
-import TweetPanel from './TweetPanel';
+import {reactive, computed} from 'vue';
+import {useRoute} from 'vue-router';
+import TweetItem from '../components/TweetItem';
+import TweetPanel from '../components/TweetPanel';
+import {users} from '../assets/users';
 
 
 export default {
@@ -29,20 +31,12 @@ export default {
   components:{TweetPanel,TweetItem},
 
   setup(){
+    const route=useRoute();
+    const userId=computed(()=>route.params.userId);
+
      const state=reactive({
       followers: 0,
-      user: {
-        id: 1,
-        username: "Kenneth_Mathari",
-        firstName: "Kenneth",
-        lastName: "Mathari",
-        email: "mathari580@gmail.com",
-        isAdmin: true,
-        tweets:[
-            {id:1,content:"Kenneth Ndung'u is a pro software engineer"},
-            {id:2,content:"He's the Lead Software Engineer at Code & Butter Studios"}
-            ]
-      },
+      user: users[userId.value-1] || users[0]
      })
 
      function addTweet(tweet){
@@ -56,7 +50,8 @@ export default {
      return {
        state,
        addTweet,
-       followUser
+       followUser,
+       userId
      }
   },
   

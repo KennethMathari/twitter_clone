@@ -1,33 +1,35 @@
 <template>
   <div id="app">
     <nav>
-      <div class="navigation__logo">Twitter-clone</div>
-      <div class="navigation__user">{{state.user.username}}</div>
+      <router-link to="/">
+        <div class="navigation__logo">
+          Twitter Clone
+        </div>
+      </router-link>
+      <div class="navigation__user">
+        {{ state.user.username }}
+      </div>
     </nav>
-    <UserProfile/>
+  <router-view/>
   </div>
 </template>
 
 <script>
-import {reactive} from 'vue';
-import UserProfile from "./components/UserProfile";
-
+import { reactive } from 'vue';
 export default {
-  name: "App",
-  components:{UserProfile},
-  setup(){
-    const state=reactive({
+  name: 'App',
+  setup() {
+    const state = reactive({
       user:{
-      username:'KennethMathari'
-        }
+        username:'KennethMathari'
+      }
     })
-
-    return{
+    
+    return {
       state
     }
   }
-  
-  }
+}
 </script>
 
 <style lang="scss">
@@ -38,7 +40,6 @@ export default {
   color: #2c3e50;
   min-height: 100vh;
   background-color: #F3F5FA;
-
   nav {
     display: flex;
     align-items: center;
