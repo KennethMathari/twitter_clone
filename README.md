@@ -1,3 +1,3 @@
 # twitter
 
-![](twitter%20clone.png)
+![](/twitter%20clone.png)
